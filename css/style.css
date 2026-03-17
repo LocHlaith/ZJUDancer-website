@@ -9427,55 +9427,41 @@ Section Title
 /*# sourceMappingURL=style.css.map */
 
 /* ==========================================================================
-   ZJUDancer 中文排版优化补丁 (追加到 style.css 末尾)
+   ZJUDancer 强制防换行与排版修复补丁
    ========================================================================== */
 
-/* 1. 优化全局中文字体，优先使用系统默认无衬线黑体 */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans CJK SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+/* 1. 修复顶部 Logo 换行 ("ZJUDance r") */
+.header-logo h2, 
+.footer-widget-content .logo h2 {
+    white-space: nowrap !important; /* 强制 Logo 绝对不换行 */
+    font-size: clamp(22px, 2vw, 28px) !important; /* 根据屏幕自适应大小 */
+    letter-spacing: 0 !important;
 }
 
-/* 2. 缩小 Banner 区域的超大标题 */
-.banner-content h2.split_chars {
-    font-size: clamp(32px, 4vw, 48px) !important; /* 最小32px，最大48px */
-    line-height: 1.3 !important;
-    margin-bottom: 12px !important;
-    letter-spacing: 1px; /* 中文增加一点字间距更好看 */
+/* 2. 修复导航栏折行 (缩小字号和间距，强制不换行) */
+.header-menu .nav_scroll > li > a {
+    padding: 30px 10px !important; /* 缩小菜单项左右的空白间距 (原模板间距过大) */
+    font-size: 15px !important;    /* 稍微缩小菜单字号 */
+    white-space: nowrap !important; /* 强制每个菜单项文字不换行 */
 }
 
-/* 3. 缩小各个子页面顶部的页面标题 (如：战队发展历程) */
-.title-content .page-title {
-    font-size: clamp(36px, 5vw, 50px) !important;
-    line-height: 1.3 !important;
-    letter-spacing: 2px;
+/* 确保导航栏容器有足够的弹性空间 */
+.header-menu {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
 }
 
-/* 4. 缩小内容区块的标题 (如：完全自主的 双足机器人系统) */
-.section-title .title {
-    font-size: clamp(28px, 4vw, 42px) !important;
-    line-height: 1.4 !important;
+/* 3. 修复底部 Footer 描述文字单字换行 ("战 队", "边 界") */
+.footer-desc {
+    font-size: 15px !important;
+    line-height: 1.8 !important;
+    max-width: 100% !important; /* 解除原模板可能存在的最大宽度限制 */
+    word-break: keep-all !important; /* 保证中文词组不被生硬切断 */
+    white-space: nowrap !important; /* 强制按我们写的 <br> 换行，不自动折行 */
 }
 
-/* 5. 修复原模板中多个 <h1> 强制换行的问题，让它们在 PC 端自然连成一行 */
-@media (min-width: 992px) {
-    .section-title h1.title.split-text {
-        display: inline-block; /* 将块级元素改为行内块，消除强制换行 */
-        margin-right: 10px;
-    }
-}
-
-/* 6. 优化卡片标题大小 (论文、新闻、技术模块) */
-.blog-title a, 
-.portfolio-content .title h4 a, 
-.feature-content h4,
-.single-process-box .process-content h3 {
-    font-size: clamp(18px, 2vw, 22px) !important;
-    line-height: 1.5 !important;
-    word-break: keep-all; /* 防止中文词组被生硬切断 */
-}
-
-/* 7. 优化副标题 (如：About Us, Core Technology) */
-.section-sub-title .sub-title {
-    font-size: 16px !important;
-    letter-spacing: 1.5px !important;
+/* 4. 修复首页大标题过长导致的错位 */
+.section-title h1.title {
+    word-break: keep-all !important;
 }
