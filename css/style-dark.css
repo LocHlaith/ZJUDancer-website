@@ -599,41 +599,59 @@
 }
 
 /* ==========================================================================
-   ZJUDancer 强制防换行与排版修复补丁
+   ZJUDancer 强制防换行与排版修复补丁 (已优化)
    ========================================================================== */
 
 /* 1. 修复顶部 Logo 换行 ("ZJUDance r") */
-.header-logo h2, 
+/* 扩大选择器范围，确保无论 Logo 是 a, h1 还是 h2 都能生效 */
+.header-logo,
+.header-logo *,
 .footer-widget-content .logo h2 {
-    white-space: nowrap !important; /* 强制 Logo 绝对不换行 */
-    font-size: clamp(22px, 2vw, 28px) !important; /* 根据屏幕自适应大小 */
+    white-space: nowrap !important; /* 强制绝对不换行 */
+    word-break: keep-all !important;
     letter-spacing: 0 !important;
 }
 
-/* 2. 修复导航栏折行 (缩小字号和间距，强制不换行) */
+/* 2. 修复导航栏折行 */
 .header-menu .nav_scroll > li > a {
-    padding: 30px 10px !important; /* 缩小菜单项左右的空白间距 (原模板间距过大) */
-    font-size: 15px !important;    /* 稍微缩小菜单字号 */
-    white-space: nowrap !important; /* 强制每个菜单项文字不换行 */
+    padding: 30px 10px !important; 
+    font-size: 15px !important;    
+    white-space: nowrap !important; 
 }
-
-/* 确保导航栏容器有足够的弹性空间 */
 .header-menu {
     width: 100% !important;
     display: flex;
     justify-content: center;
 }
 
-/* 3. 修复底部 Footer 描述文字单字换行 ("战 队", "边 界") */
+/* 3. 修复 Banner 区域大标题和描述单字换行 ("战 队", "边 界") */
+/* 解除原模板中 width: 45% 等宽度限制，并强制 PC 端不换行 */
+.banner-content h1,
+.banner-content h2,
+.banner-content p,
+.banner-content-wrap .banner-content p {
+    width: auto !important; 
+    max-width: 100% !important;
+    word-break: keep-all !important; /* 保证中文词组不被切断 */
+    white-space: nowrap !important; /* PC端强制同行显示 */
+}
+
+/* 4. 修复底部 Footer 描述文字单字换行 */
 .footer-desc {
     font-size: 15px !important;
     line-height: 1.8 !important;
-    max-width: 100% !important; /* 解除原模板可能存在的最大宽度限制 */
-    word-break: keep-all !important; /* 保证中文词组不被生硬切断 */
-    white-space: nowrap !important; /* 强制按我们写的 <br> 换行，不自动折行 */
+    max-width: 100% !important; 
+    word-break: keep-all !important; 
 }
 
-/* 4. 修复首页大标题过长导致的错位 */
-.section-title h1.title {
-    word-break: keep-all !important;
+/* 5. 📱 移动端响应式保护 (非常重要) */
+/* 防止 white-space: nowrap 导致手机端屏幕被撑破出现横向滚动条 */
+@media (max-width: 991px) {
+    .banner-content h1,
+    .banner-content h2,
+    .banner-content p,
+    .banner-content-wrap .banner-content p,
+    .footer-desc {
+        white-space: normal !important; /* 手机端允许自然换行 */
+    }
 }
